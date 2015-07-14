@@ -1,7 +1,7 @@
 %% initialization
 
-impulseName = 'squareMidCenterImp.wav';
-respName = 'squareMidCenterResp.wav';
+impulseName = 'wav/squareMidCenterImp.wav';
+respName = 'wav/squareMidCenterResp.wav';
 
 scaleAmplitude = 2;
 

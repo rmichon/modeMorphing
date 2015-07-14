@@ -1,7 +1,7 @@
 %% initialization
 
-impulseName = 'roundSmallCenterImp.wav';
-respName = 'roundSmallCenterResp.wav';
+impulseName = 'wav/roundSmallCenterImp.wav';
+respName = 'wav/roundSmallCenterResp.wav';
 
 scaleAmplitude = 1;
 
