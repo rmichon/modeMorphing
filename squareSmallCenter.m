@@ -108,7 +108,16 @@ subplot(2,1,2); plot(fm, rt60m, '-o'); grid; xlim([500 11000]);
 title('Mode T60s');
 xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
 
+fileFreq = fopen('modes/squareSmallCenterFreq.txt','w');
+fileGain = fopen('modes/squareSmallCenterGain.txt','w');
+fileT60 = fopen('modes/squareSmallCenterT60.txt','w');
 
+fprintf(fileFreq,'%f\n',fm);
+fclose(fileFreq);
+fprintf(fileGain,'%f\n',gm);
+fclose(fileGain);
+fprintf(fileT60,'%f\n',rt60m);
+fclose(fileT60);
 
 
 

@@ -122,7 +122,16 @@ stem(fm, rt60m); grid;
 title('Mode T60s');
 xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
 
+fileFreq = fopen('modes/squareBigCenterFreq.txt','w');
+fileGain = fopen('modes/squareBigCenterGain.txt','w');
+fileT60 = fopen('modes/squareBigCenterT60.txt','w');
 
+fprintf(fileFreq,'%f\n',fm);
+fclose(fileFreq);
+fprintf(fileGain,'%f\n',gm);
+fclose(fileGain);
+fprintf(fileT60,'%f\n',rt60m);
+fclose(fileT60);
 
 
 
