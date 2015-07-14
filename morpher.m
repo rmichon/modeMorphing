@@ -13,4 +13,5 @@ file2Gm = fopen('modes/squareBigCenterGain.txt','r');
 gm2 = fscanf(file2Gm,'%f');
 file2Rt60m = fopen('modes/squareBigCenterT60.txt','r');
 rt60m2 = fscanf(file2Rt60m,'%f');
+%hi
 
