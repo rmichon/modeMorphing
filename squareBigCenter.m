@@ -23,7 +23,7 @@ impulseSTFT = stft(sum(impulse,2),nbins,nskip);
 figure(1);
 responseSTFT = ftgram(sum(response,2), fs, 'music', 'nbins', nbins, 'nskip', nskip);
 
-%% computer impulse response and plot it
+%% compute impulse response and plot it
 
 impulseSpectrum = mean(abs(impulseSTFT),2)/max(mean(abs(impulseSTFT),2));
 responseSpectrum = mean(abs(responseSTFT),2)/max(mean(abs(responseSTFT),2));
@@ -39,11 +39,11 @@ irSTFT = responseSTFT./impulseSTFT;
 f = fs/2*[0:nbins]'/nbins;
 t = [0.5:nframes-0.5]*nskip/fs;
 
-% figure(2);
-% plot(f, 20*log10(irSpectrum), '-'); grid;
-% title('Spectrum');
-% xlabel('frequency, Hz'); ylabel('power, dB');
-% xlim([20 10000]);
+figure(2);
+plot(f, 20*log10(irSpectrum), '-'); grid;
+title('Spectrum');
+xlabel('frequency, Hz'); ylabel('power, dB');
+xlim([20 10000]);
 
 %% find mode frequencies
 
