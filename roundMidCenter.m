@@ -1,9 +1,9 @@
 %% initialization
 
-impulseName = 'wav/roundMidCenterImp.wav';
-respName = 'wav/roundMidCenterResp.wav';
+impulseName = 'wav/roundBigCenterImp.wav';
+respName = 'wav/roundBigCenterResp.wav';
 
-scaleAmplitude = 6;
+scaleAmplitude = 7;
 
 % mode analysis
 nbins = 2048;   % stft analysis half bandwidth, bins
