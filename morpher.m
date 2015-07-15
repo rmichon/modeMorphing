@@ -3,7 +3,7 @@
 %% Parameters
 
 fs = 96000;
-interp = 0; % a value between 0 and 1
+interp = 0.5; % a value between 0 and 1
 nbins = 2048; % FFT window size for theoritical IR
 nskip = 32; % FFT hop size for theoritical IR
 

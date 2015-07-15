@@ -1,9 +1,9 @@
 %% initialization
 
-impulseName = 'wav/roundMidCenterImp.wav';
-respName = 'wav/roundMidCenterResp.wav';
+impulseName = 'wav/roundSmallCenterImp.wav';
+respName = 'wav/roundSmallCenterResp.wav';
 
-scaleAmplitude = 6;
+scaleAmplitude = 15;
 
 % mode analysis
 nbins = 2048;   % stft analysis half bandwidth, bins
@@ -52,16 +52,18 @@ fm = (im-1)/nbins*fs/2;
 
 nmode = length(fm);
 
-% index = [3 4 6 7 8 10 11 12 13 14 16 18 20 21 22 25 26 27 28 30 31 32 33 34 36 37 38 40];
-% nmode = length(index);
-% fm = fm(index);
-% gammam = gammam(index);
+index = [3 4 6 7 8 10 11 12 13 14 16 18 20 22 23 24 27 28 29 30 32 33 34 35 38 39 40 42 43 46 47 51 53 54];
+nmode = length(index);
+fm = fm(index);
+gammam = gammam(index);
+
+%#of modes: 34
 
 figure(3);
 plot(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
 title('bowl spectrum (-), mode frequencies (o)');
 xlabel('frequency, Hz'); ylabel('power, dB');
-xlim([20 10000]);
+xlim([20 15000]);
 
 %% estimate T60 and amplitudes
 

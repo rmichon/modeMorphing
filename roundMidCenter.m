@@ -1,9 +1,9 @@
 %% initialization
 
-impulseName = 'wav/roundBigCenterImp.wav';
-respName = 'wav/roundBigCenterResp.wav';
+impulseName = 'wav/roundMidCenterImp.wav';
+respName = 'wav/roundMidCenterResp.wav';
 
-scaleAmplitude = 7;
+scaleAmplitude = 10;
 
 % mode analysis
 nbins = 2048;   % stft analysis half bandwidth, bins
@@ -52,10 +52,11 @@ fm = (im-1)/nbins*fs/2;
 
 nmode = length(fm);
 
-% index = [3 4 6 7 8 10 11 12 13 14 16 18 20 21 22 25 26 27 28 30 31 32 33 34 36 37 38 40];
-% nmode = length(index);
-% fm = fm(index);
-% gammam = gammam(index);
+index = [2 3 4 7 8 9 11 12 13 14 15 16 17 18 19 21 22 23 24 26 28 30 32 33 34 36 37 39 40 41 42 43 44 45];
+nmode = length(index);
+fm = fm(index);
+gammam = gammam(index);
+%#of modes selected:33
 
 figure(3);
 plot(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
