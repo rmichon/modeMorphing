@@ -23,6 +23,18 @@ impulseSTFT = stft(sum(impulse,2),nbins,nskip);
 figure(1);
 responseSTFT = ftgram(sum(response,2), fs, 'music', 'nbins', nbins, 'nskip', nskip);
 
+nb = 4096*2;
+impulseFFT = fft(impulse,nb);
+responseFFT = fft(response,nb);
+impulseFFT = impulseFFT(1:round(length(impulseFFT)/2));
+responseFFT = responseFFT(1:round(length(responseFFT)/2));
+irFFT = responseFFT./impulseFFT;
+irFFTdB = dbn(irFFT);
+f = fs/2*[0:(length(responseFFT)-1)]'/(length(responseFFT)-1);
+figure(10);
+plot(f,irFFTdB); grid;
+xlim([20 10000]);
+
 %% compute impulse response and plot it
 
 impulseSpectrum = mean(abs(impulseSTFT),2)/max(mean(abs(impulseSTFT),2));
@@ -34,33 +46,34 @@ irSTFT = responseSTFT./impulseSTFT;
 
 % define time, frequency axes
 [~, nframes] = size(irSTFT);
-f = fs/2*[0:nbins]'/nbins;
+%f = fs/2*[0:nbins]'/nbins;
 t = [0.5:nframes-0.5]*nskip/fs;
 
-figure(2);
-plot(f, 20*log10(irSpectrum), '-'); grid;
-title('Spectrum');
-xlabel('frequency, Hz'); ylabel('power, dB');
-xlim([20 10000]);
+% figure(2);
+% plot(f, 20*log10(irSpectrum), '-'); grid;
+% title('Spectrum');
+% xlabel('frequency, Hz'); ylabel('power, dB');
+% xlim([20 10000]);
+% 
 
 %% find mode frequencies
 
-[gammam, im] = localmax(20*log10(abs(max(irSpectrum, 2))));
-fm = (im-1)/nbins*fs/2;
+[gammam, im] = localmax(20*log10(abs(max(irFFT, 2))));
+fm = (im-1)/(nb/2)*fs/2;
 
 nmode = length(fm);
 
-index = [1 2 3 4 5 6 7 9 10 11 12 13 14 15 17 18 20 23 24 25 27 29 31 32 34 36 37 38 42 43 44 47 48 49 50 52 53];
-nmode = length(index);
-fm = fm(index);
-gammam = gammam(index);
+%index = [1 2 3 4 5 6 7 9 10 11 12 13 14 15 17 18 20 23 24 25 27 29 31 32 34 36 37 38 42 43 44 47 48 49 50 52 53];
+%nmode = length(index);
+%fm = fm(index);
+%gammam = gammam(index);
 
 figure(3);
 %plot(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o',f,20*log10(abs(smallIrSprectrum)), '-'); grid;
-plot(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
+plot(f, 20*log10(abs(irFFT)), '-', fm, gammam, 'o'); grid;
 title('bowl spectrum (-), mode frequencies (o)');
 xlabel('frequency, Hz'); ylabel('power, dB');
-xlim([20 10000]);
+xlim([20 1000]);
 
 %% estimate T60 and amplitudes
 

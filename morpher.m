@@ -68,7 +68,9 @@ xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
 
 %% Converting the modes into a matrix of biquad coeffs
 
-figure(2);
+nPoints = 4096; % Number of points for freqz
+totalH = zeros(nPoints,1); % Frequency response of the modeled instrument
+
 for m = [1:nmode],
     
     % freq, gain and T60s are converted to biquad coeffs 
@@ -78,11 +80,8 @@ for m = [1:nmode],
     B = [gm(m) 0 -gm(m)];
     
     % computing the frequency response of the biquad and plotting it 
-    [H,F] = freqz(B,A,1024);
-    HdB = 20*log10(H);
-    fplot = [0:length(F)-1]/length(F)*fs/2;
-    plot(fplot,real(HdB));
-    hold on;
+    [H,F] = freqz(B,A,nPoints);
+    totalH = totalH + H; % adding the frequency responses together
     
     % creating the coeffs matrix
     if m == 1
@@ -93,9 +92,12 @@ for m = [1:nmode],
 
 end;
 
-hold off;
-grid;
-title('Biquads Frequency Response');
+totalH = totalH / max(totalH); % normalizing the frequency response
+HFindB = 20*log10(totalH); % to dB
+
+figure(2);
+plot(fplot,real(HFindB)); grid;
+title('Computed Frequency Response of the Model');
 xlabel('Frequency, Hz'); ylabel('Amplitude, dB');
 xlim([20 10000]);
 
@@ -131,9 +133,10 @@ f = fs/2*[0:nbins]'/nbins;
 
 figure(4);
 plot(f, 20*log10(responseSpectrum), '-'); grid;
-title('Spectrum');
+title('Measured Frequency Response of the Model');
 xlabel('frequency, Hz'); ylabel('power, dB');
 xlim([20 10000]);
+ylim([-100 0]);
 
 
 
