@@ -112,7 +112,7 @@ gmZerodB = gmdB-min(gmdB);
 
 figure(5);
 subplot(2,1,1);
-stem(fm, gmZerodB); grid;
+stem(fm, gmdB); grid;
 title('Mode Amplitudes');
 xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
 

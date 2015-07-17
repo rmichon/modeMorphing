@@ -3,7 +3,7 @@
 %% Parameters
 
 fs = 96000;
-interp = 0.5; % a value between 0 and 1
+interp = 0.0; % a value between 0 and 1
 nbins = 2048; % FFT window size for theoritical IR
 nskip = 32; % FFT hop size for theoritical IR
 
@@ -32,9 +32,9 @@ gm1 = gm1(1:nmode);
 rt60m1 = rt60m1(1:nmode);
 
 % calculating the parameters of the theoritical response
-fm = fm1 + (fm2-fm1)*interp;
-gm = gm1 + (gm2-gm1)*interp;
-rt60m = rt60m1 + (rt60m2-rt60m1)*interp;
+modeFreqs = fm1 + (fm2-fm1)*interp;
+modeGains = gm1 + (gm2-gm1)*interp;
+modeT60 = rt60m1 + (rt60m2-rt60m1)*interp;
 
 %% Ploting the theoritical modes
 
@@ -47,13 +47,17 @@ rt60m = rt60m1 + (rt60m2-rt60m1)*interp;
 % gmdB2 = 20*log10(gm2);
 % gmZerodB2 = gmdB2-min(gmdB2);
 
-gm = gm/max(gm);
-gmdB = 20*log10(gm);
+modeGains = modeGains/max(modeGains);
+gmdB = 20*log10(modeGains);
 gmZerodB = gmdB-min(gmdB);
 
 figure(1);
-subplot(2,1,1);
-stem(fm, gmZerodB); grid;
+%subplot(2,1,1);
+stem(modeFreqs, gmdB, 'blue');
+hold on;
+stem(fm, 20*log10(gm), 'red');
+hold off;
+grid;
 %hold on;
 %stem(fm1, gmZerodB1, 'blue');
 %stem(fm2, gmZerodB2, 'red');
@@ -61,10 +65,10 @@ stem(fm, gmZerodB); grid;
 title('Mode Amplitudes');
 xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
 
-subplot(2,1,2); 
-stem(fm, rt60m); grid;
-title('Mode T60s');
-xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
+% subplot(2,1,2); 
+% stem(modeFreqs, modeT60); grid;
+% title('Mode T60s');
+% xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
 
 %% Converting the modes into a matrix of biquad coeffs
 
@@ -74,10 +78,11 @@ totalH = zeros(nPoints,1); % Frequency response of the modeled instrument
 for m = [1:nmode],
     
     % freq, gain and T60s are converted to biquad coeffs 
-    w = 2*pi*fm(m)/fs;
-    r = 0.001.^(1/(rt60m(m)*fs));
+    w = 2*pi*modeFreqs(m)/fs;
+    r = 0.001.^(1/(modeT60(m)*fs));
     A = [1 -2*r*cos(w) r^2];
-    B = [gm(m) 0 -gm(m)];
+    B = [modeGains(m) 0 -modeGains(m)];
+    %B = [gm(m) 0 -1];
     
     % computing the frequency response of the biquad and plotting it 
     [H,F] = freqz(B,A,nPoints);
@@ -92,14 +97,18 @@ for m = [1:nmode],
 
 end;
 
+fplot = fs/2*[0:(nPoints-1)]'/(nPoints-1);
+
 totalH = totalH / max(totalH); % normalizing the frequency response
 HFindB = 20*log10(totalH); % to dB
 
-figure(2);
-plot(fplot,real(HFindB)); grid;
-title('Computed Frequency Response of the Model');
-xlabel('Frequency, Hz'); ylabel('Amplitude, dB');
-xlim([20 10000]);
+irSpectrum = irSpectrum ./ max(irSpectrum);
+
+% figure(2);
+% plot(fplot,real(HFindB),'-',f, 20*log10(abs(irSpectrum)),'-'); grid;
+% title('Computed Frequency Response of the Model');
+% xlabel('Frequency, Hz'); ylabel('Amplitude, dB');
+% xlim([20 10000]);
 
 %% Computing the impulse response of the system and saving it to audio
 
@@ -120,10 +129,10 @@ response = response/max(response);
 audiowrite('res.wav',response,fs);
 
 % plotting the response
-figure(3);
-plot(response);
-title('Theoritical Impulse Response');
-xlabel('Time, Samples'); ylabel('Gain');
+% figure(3);
+% plot(response);
+% title('Theoritical Impulse Response');
+% xlabel('Time, Samples'); ylabel('Gain');
 
 %% Computing the frequency response of the impulse response
 
@@ -131,12 +140,12 @@ responseSTFT = stft(sum(response',2),nbins,nskip);
 responseSpectrum = mean(abs(responseSTFT),2)/max(mean(abs(responseSTFT),2));
 f = fs/2*[0:nbins]'/nbins;
 
-figure(4);
-plot(f, 20*log10(responseSpectrum), '-'); grid;
-title('Measured Frequency Response of the Model');
-xlabel('frequency, Hz'); ylabel('power, dB');
-xlim([20 10000]);
-ylim([-100 0]);
+% figure(4);
+% plot(f, 20*log10(responseSpectrum), '-',f, 20*log10(abs(irSpectrum)),'-'); grid;
+% title('Measured Frequency Response of the Model');
+% xlabel('frequency, Hz'); ylabel('power, dB');
+% xlim([20 10000]);
+% ylim([-100 0]);
 
 
 
