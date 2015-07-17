@@ -50,10 +50,11 @@ fm = (im-1)/nbins*fs/2;
 
 nmode = length(fm);
 
-index = [1 2 3 4 5 6 7 9 10 11 12 13 14 15 17 18 20 23 24 25 27 29 31 32 34 36 37 38 42 43 44 47 48 49 50 52 53];
+index = [2 3 4 5 7 9 10 11 12 13 14 15 17 18 20 23 24 25 27 29 31 32 34 36 37 38 42 43 44 47 48 49 50 52 53];
 nmode = length(index);
 fm = fm(index);
 gammam = gammam(index);
+%#of modes 34
 
 figure(3);
 %plot(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o',f,20*log10(abs(smallIrSprectrum)), '-'); grid;
