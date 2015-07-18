@@ -60,7 +60,7 @@ gammam = gammam(index);
 %#of modes selected:34
 
 figure(3);
-plot(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
+semilogx(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
 title('bowl spectrum (-), mode frequencies (o)');
 xlabel('frequency, Hz'); ylabel('power, dB');
 xlim([20 10000]);
