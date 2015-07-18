@@ -53,7 +53,7 @@ fm = (im-1)/nbins*fs/2;
 nmode = length(fm);
 
 %index = [3 4 6 7 8 10 11 12 13 14 16 18 20 22 23 24 27 28 29 30 32 33 34 35 36 38 39 40 42 43 46 47 50 51];
-index = [3 4 6 10 12 16];
+index = [3 4 6 10 12 16 24];
 nmode = length(index); 
 fm = fm(index);
 gammam = gammam(index);

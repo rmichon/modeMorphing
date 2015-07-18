@@ -53,13 +53,13 @@ fm = (im-1)/nbins*fs/2;
 nmode = length(fm);
 
 %index = [1 2 4 5 6 7 8 9 10 11 13 14 15 16 17 18 19 20 21 22 23 24 25 28 30 31 32 33 34 36 37 39 40 41 42 ];
-index = [1 2 4 5 6 7];
+index = [1 2 4 6 7 9 10];
 nmode = length(index);
 fm = fm(index);
 gammam = gammam(index);
 
 figure(3);
-plot(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
+semilogx(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
 title('bowl spectrum (-), mode frequencies (o)');
 xlabel('frequency, Hz'); ylabel('power, dB');
 xlim([20 10000]);
