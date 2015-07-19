@@ -3,17 +3,17 @@
 %% Parameters
 
 fs = 96000;
-interp = 0.0; % a value between 0 and 1
+interp = 0.42; % a value between 0 and 1
 nbins = 2048; % FFT window size for theoritical IR
 nskip = 32; % FFT hop size for theoritical IR
 
 % change the file names in function of your needs...
-file1Fm = fopen('modes/squareBigCenterFreq.txt','r');
-file1Gm = fopen('modes/squareBigCenterGain.txt','r');
-file1Rt60m = fopen('modes/squareBigCenterT60.txt','r');
-file2Fm = fopen('modes/squareSmallCenterFreq.txt','r');
-file2Gm = fopen('modes/squareSmallCenterGain.txt','r');
-file2Rt60m = fopen('modes/squareSmallCenterT60.txt','r');
+file1Fm = fopen('modes/roundBigCenterFreq.txt','r');
+file1Gm = fopen('modes/roundBigCenterGain.txt','r');
+file1Rt60m = fopen('modes/roundBigCenterT60.txt','r');
+file2Fm = fopen('modes/roundSmallCenterFreq.txt','r');
+file2Gm = fopen('modes/roundSmallCenterGain.txt','r');
+file2Rt60m = fopen('modes/roundSmallCenterT60.txt','r');
 
 %% Extracting the data & computing theoritical response
 
@@ -51,24 +51,23 @@ modeGains = modeGains/max(modeGains);
 gmdB = 20*log10(modeGains);
 gmZerodB = gmdB-min(gmdB);
 
-figure(1);
-%subplot(2,1,1);
+figure(20);
 stem(modeFreqs, gmdB, 'blue');
 hold on;
 stem(fm, 20*log10(gm), 'red');
 hold off;
 grid;
-%hold on;
-%stem(fm1, gmZerodB1, 'blue');
-%stem(fm2, gmZerodB2, 'red');
-%hold off;
 title('Mode Amplitudes');
 xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
 
-% subplot(2,1,2); 
-% stem(modeFreqs, modeT60); grid;
-% title('Mode T60s');
-% xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
+figure(21);
+stem(modeFreqs, modeT60, 'blue');
+hold on;
+stem(fm, rt60m, 'red'); 
+hold off;
+grid;
+title('Mode T60s');
+xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
 
 %% Converting the modes into a matrix of biquad coeffs
 

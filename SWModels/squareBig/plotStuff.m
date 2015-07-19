@@ -16,4 +16,5 @@ massZ = fscanf(massZFile,'%f');
 figure(10);
 %plot(freq,massY);
 plot(freq,massX,'g',freq,massY,'r',freq,massZ,'b');
+xlim([0 1000]);
 legend('X','Y','Z');

@@ -53,13 +53,13 @@ fm = (im-1)/nbins*fs/2;
 nmode = length(fm);
 
 %index = [1 2 3 5 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36];
-index = [1 2 3 4 7 8 9]
+index = [1 2 3 6 7 8 9 12];
 nmode = length(index);
 fm = fm(index);
 gammam = gammam(index);
 % n of modes =34
-figure(3);
-semilogx(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
+figure(10);
+plot(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
 title('bowl spectrum (-), mode frequencies (o)');
 xlabel('frequency, Hz'); ylabel('power, dB');
 xlim([20 10000]);
@@ -109,7 +109,16 @@ subplot(2,1,2); plot(fm, rt60m, '-o'); grid; xlim([500 11000]);
 title('Mode T60s');
 xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
 
+fileFreq = fopen('modes/roundBigCenterFreq.txt','w');
+fileGain = fopen('modes/roundBigCenterGain.txt','w');
+fileT60 = fopen('modes/roundBigCenterT60.txt','w');
 
+fprintf(fileFreq,'%f\n',fm);
+fclose(fileFreq);
+fprintf(fileGain,'%f\n',gm);
+fclose(fileGain);
+fprintf(fileT60,'%f\n',rt60m);
+fclose(fileT60);
 
 
 
