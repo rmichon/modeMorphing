@@ -47,16 +47,17 @@ t = [0.5:nframes-0.5]*nskip/fs;
 
 %% find mode frequencies
 
-[gammam, im] = localmax(20*log10(abs(max(irSpectrum, 2))));
+[gammam, im] = localmax(20*log10(abs(max(irSpectrum, 2))))
 fm = (im-1)/nbins*fs/2;
 
 nmode = length(fm);
 
 %index = [1 3 4 6 9 12 13 14 15 16 17 18 19 21 22 23 24 25 26 28 29 30 32 33 34 35 36 37 39 40 42 44 46 47];
-index = [1 4 6 9 13 18 21];
+%index = [1 3 4 5 6 9 13 18 21];
+index = [1 3 6 8 9 13 17 21];
 nmode = length(index);
 fm = fm(index);
-gammam = gammam(index);
+gammam = gammam(index); 
 
 %#ofmodes:34
 
