@@ -39,11 +39,11 @@ irSTFT = responseSTFT./impulseSTFT;
 f = fs/2*[0:nbins]'/nbins;
 t = [0.5:nframes-0.5]*nskip/fs;
 
-% figure(2);
-% plot(f, 20*log10(irSpectrum), '-'); grid;
-% title('Spectrum');
-% xlabel('frequency, Hz'); ylabel('power, dB');
-% xlim([20 10000]);
+figure(2);
+plot(f, 20*log10(irSpectrum), '-'); grid;
+title('Spectrum');
+xlabel('frequency, Hz'); ylabel('power, dB');
+xlim([20 10000]);
 
 %% find mode frequencies
 
@@ -53,7 +53,7 @@ fm = (im-1)/nbins*fs/2;
 nmode = length(fm);
 
 %index = [2 3 4 5 6 7 8 9 10 11 12 13 15 16 17 18 19 20 21 24 25 28 29 30 31 32 33 35 36 38 40 41 42 45];
-index = [2 4 6 7 9 11 18];
+index = [2 4 6 7 9 11 12 16];
 nmode = length(index);
 fm = fm(index);
 gammam = gammam(index);
@@ -88,13 +88,13 @@ for m = [1:nmode],
     gm(m) = 10.^((theta(1)+theta(2)*t(fmax+1))/20);
     rt60m(m) = -60/theta(2);
 
-    % plot mode response
-    % figure(4);
-    % plot(t, 20*log10(psdm), '-', t(index), basis*theta, '-', 'LineWidth', 2); grid;
-    % title(['response energy profile, mode ', int2str(m)]);
-    % xlabel('time, seconds'); ylabel('power, dB');
+    plot mode response
+    figure(4);
+    plot(t, 20*log10(psdm), '-', t(index), basis*theta, '-', 'LineWidth', 2); grid;
+    title(['response energy profile, mode ', int2str(m)]);
+    xlabel('time, seconds'); ylabel('power, dB');
 
-    % pause(0.5);
+    pause(0.5);
 
 end;
 
@@ -102,10 +102,10 @@ end;
 gm = gm/max(gm);
 
 % plot mode amplitudes, decay times
-figure(4);
-subplot(2,1,1); plot(fm, 20*log10(gm), '-o'); grid; xlim([500 11000]);
-title('Mode amplitudes');
-xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
+% figure(4);
+% subplot(2,1,1); plot(fm, 20*log10(gm), '-o'); grid; xlim([500 11000]);
+% title('Mode amplitudes');
+% xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
 
 subplot(2,1,2); plot(fm, rt60m, '-o'); grid; xlim([500 11000]);
 title('Mode T60s');
