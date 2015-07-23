@@ -3,17 +3,19 @@
 %% Parameters
 
 fs = 96000;
-interp = 0.42; % a value between 0 and 1
+%interp = 0.42; % round
+%interp = 0.5; % semi
+interp = 0.55; % square
 nbins = 2048; % FFT window size for theoritical IR
 nskip = 32; % FFT hop size for theoritical IR
 
 % change the file names in function of your needs...
-file1Fm = fopen('modes/semBigCenterFreq.txt','r');
-file1Gm = fopen('modes/semBigCenterGain.txt','r');
-file1Rt60m = fopen('modes/semBigCenterT60.txt','r');
-file2Fm = fopen('modes/semSmallCenterFreq.txt','r');
-file2Gm = fopen('modes/semSmallCenterGain.txt','r');
-file2Rt60m = fopen('modes/semSmallCenterT60.txt','r');
+file1Fm = fopen('modes/squareBigCenterFreq.txt','r');
+file1Gm = fopen('modes/squareBigCenterGain.txt','r');
+file1Rt60m = fopen('modes/squareBigCenterT60.txt','r');
+file2Fm = fopen('modes/squareSmallCenterFreq.txt','r');
+file2Gm = fopen('modes/squareSmallCenterGain.txt','r');
+file2Rt60m = fopen('modes/squareSmallCenterT60.txt','r');
 
 %% Extracting the data & computing theoritical response
 
