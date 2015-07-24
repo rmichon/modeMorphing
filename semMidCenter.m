@@ -1,7 +1,10 @@
 %% initialization
 
-impulseName = 'wav/semMidCenterImp.wav';
-respName = 'wav/semMidCenterResp.wav';
+% Old one...
+%impulseName = 'wav/semMidCenterImp.wav';
+%respName = 'wav/semMidCenterResp.wav';
+impulseName = 'wav/semMidCenterImp2.wav';
+respName = 'wav/semMidCenterResp2.wav';
 
 scaleAmplitude = 2;
 
@@ -58,8 +61,8 @@ nmode = length(index);
 fm = fm(index);
 gammam = gammam(index);
 
-figure(3);
-semilogx(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
+figure(33);
+plot(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
 title('bowl spectrum (-), mode frequencies (o)');
 xlabel('frequency, Hz'); ylabel('power, dB');
 xlim([20 10000]);

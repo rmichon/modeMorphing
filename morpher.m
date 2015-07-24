@@ -4,7 +4,7 @@
 
 fs = 96000;
 %interp = 0.42; % round
-interp = 0.1; % semi
+interp = 0.0; % semi
 %interp = 0.55; % square
 nbins = 2048; % FFT window size for theoritical IR
 nskip = 32; % FFT hop size for theoritical IR

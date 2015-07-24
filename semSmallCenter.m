@@ -61,7 +61,7 @@ gammam = gammam(index);
 %#of modes 34
 
 figure(3);
-semilogx(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
+plot(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
 title('bowl spectrum (-), mode frequencies (o)');
 xlabel('frequency, Hz'); ylabel('power, dB');
 xlim([20 10000]);
@@ -88,13 +88,13 @@ for m = [1:nmode],
     gm(m) = 10.^((theta(1)+theta(2)*t(fmax+1))/20);
     rt60m(m) = -60/theta(2);
 
-    plot mode response
-    figure(4);
-    plot(t, 20*log10(psdm), '-', t(index), basis*theta, '-', 'LineWidth', 2); grid;
-    title(['response energy profile, mode ', int2str(m)]);
-    xlabel('time, seconds'); ylabel('power, dB');
-
-    pause(0.5);
+    % plot mode response
+%     figure(4);
+%     plot(t, 20*log10(psdm), '-', t(index), basis*theta, '-', 'LineWidth', 2); grid;
+%     title(['response energy profile, mode ', int2str(m)]);
+%     xlabel('time, seconds'); ylabel('power, dB');
+% 
+%     pause(0.5);
 
 end;
 
@@ -102,10 +102,10 @@ end;
 gm = gm/max(gm);
 
 % plot mode amplitudes, decay times
-% figure(4);
-% subplot(2,1,1); plot(fm, 20*log10(gm), '-o'); grid; xlim([500 11000]);
-% title('Mode amplitudes');
-% xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
+figure(4);
+subplot(2,1,1); plot(fm, 20*log10(gm), '-o'); grid; xlim([500 11000]);
+title('Mode amplitudes');
+xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
 
 subplot(2,1,2); plot(fm, rt60m, '-o'); grid; xlim([500 11000]);
 title('Mode T60s');

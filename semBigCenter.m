@@ -1,7 +1,10 @@
 %% initialization
 
-impulseName = 'wav/semBigCenterImp.wav';
-respName = 'wav/semBigCenterResp.wav';
+% old one
+%impulseName = 'wav/semBigCenterImp.wav';
+%respName = 'wav/semBigCenterResp.wav';
+impulseName = 'wav/semBigCenterImp2.wav';
+respName = 'wav/semBigCenterResp2.wav';
 
 scaleAmplitude = 4;
 
