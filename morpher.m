@@ -4,25 +4,25 @@
 
 fs = 96000;
 %interp = 0.42; % round
-interp = 0.0; % semi
-%interp = 0.55; % square
+%interp = 0.0; % semi
+interp = 0.55; % square
 nbins = 2048; % FFT window size for theoritical IR
 nskip = 32; % FFT hop size for theoritical IR
 
 % change the file names in function of your needs...
-% file1Fm = fopen('modes/squareBigCenterFreq.txt','r');
-% file1Gm = fopen('modes/squareBigCenterGain.txt','r');
-% file1Rt60m = fopen('modes/squareBigCenterT60.txt','r');
-% file2Fm = fopen('modes/squareSmallCenterFreq.txt','r');
-% file2Gm = fopen('modes/squareSmallCenterGain.txt','r');
-% file2Rt60m = fopen('modes/squareSmallCenterT60.txt','r');
+file1Fm = fopen('modes/squareBigCenterFreq.txt','r');
+file1Gm = fopen('modes/squareBigCenterGain.txt','r');
+file1Rt60m = fopen('modes/squareBigCenterT60.txt','r');
+file2Fm = fopen('modes/squareSmallCenterFreq.txt','r');
+file2Gm = fopen('modes/squareSmallCenterGain.txt','r');
+file2Rt60m = fopen('modes/squareSmallCenterT60.txt','r');
 
-file1Fm = fopen('modes/semBigCenterFreq.txt','r');
-file1Gm = fopen('modes/semBigCenterGain.txt','r');
-file1Rt60m = fopen('modes/semBigCenterT60.txt','r');
-file2Fm = fopen('modes/semSmallCenterFreq.txt','r');
-file2Gm = fopen('modes/semSmallCenterGain.txt','r');
-file2Rt60m = fopen('modes/semSmallCenterT60.txt','r');
+% file1Fm = fopen('modes/semBigCenterFreq.txt','r');
+% file1Gm = fopen('modes/semBigCenterGain.txt','r');
+% file1Rt60m = fopen('modes/semBigCenterT60.txt','r');
+% file2Fm = fopen('modes/semSmallCenterFreq.txt','r');
+% file2Gm = fopen('modes/semSmallCenterGain.txt','r');
+% file2Rt60m = fopen('modes/semSmallCenterT60.txt','r');
 
 % file1Fm = fopen('modes/roundBigCenterFreq.txt','r');
 % file1Gm = fopen('modes/roundBigCenterGain.txt','r');
@@ -77,14 +77,14 @@ grid;
 title('Mode Amplitudes');
 xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
 
-figure(21);
-stem(modeFreqs, modeT60, 'blue');
-hold on;
-stem(fm, rt60m, 'red'); 
-hold off;
-grid;
-title('Mode T60s');
-xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
+% figure(21);
+% stem(modeFreqs, modeT60, 'blue');
+% hold on;
+% stem(fm, rt60m, 'red'); 
+% hold off;
+% grid;
+% title('Mode T60s');
+% xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
 
 %% Converting the modes into a matrix of biquad coeffs
 

@@ -62,11 +62,11 @@ fm = fm(index);
 gammam = gammam(index);
 %#of modes: 34
 
-figure(3);
-semilogx(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
+figure(33);
+plot(f, 20*log10(abs(irSpectrum)), '-', fm, gammam, 'o'); grid;
 title('bowl spectrum (-), mode frequencies (o)');
 xlabel('frequency, Hz'); ylabel('power, dB');
-xlim([20 10000]);
+xlim([20 5000]);
 
 %% estimate T60 and amplitudes
 
