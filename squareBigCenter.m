@@ -38,10 +38,11 @@ f = fs/2*[0:nbins]'/nbins;
 t = [0.5:nframes-0.5]*nskip/fs;
 
 figure(2);
-plot(f, 20*log10(irSpectrum), '-'); grid;
+%plot(f, 20*log10(irSpectrum), '-'); grid;
+plot(f, irSpectrum, '-'); grid;
 title('Spectrum');
 xlabel('frequency, Hz'); ylabel('power, dB');
-xlim([20 10000]);
+xlim([20 5000]);
 
 %% find mode frequencies
 

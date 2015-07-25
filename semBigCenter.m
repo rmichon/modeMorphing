@@ -1,12 +1,12 @@
 %% initialization
 
 % old one
-%impulseName = 'wav/semBigCenterImp.wav';
-%respName = 'wav/semBigCenterResp.wav';
-impulseName = 'wav/semBigCenterImp2.wav';
-respName = 'wav/semBigCenterResp2.wav';
+impulseName = 'wav/semBigCenterImp.wav';
+respName = 'wav/semBigCenterResp.wav';
+%impulseName = 'wav/semBigCenterImp2.wav';
+%respName = 'wav/semBigCenterResp2.wav';
 
-scaleAmplitude = 4;
+scaleAmplitude = 80;
 
 % mode analysis
 nbins = 2048;   % stft analysis half bandwidth, bins
@@ -30,7 +30,8 @@ responseSTFT = ftgram(sum(response,2), fs, 'music', 'nbins', nbins, 'nskip', nsk
 
 impulseSpectrum = mean(abs(impulseSTFT),2)/max(mean(abs(impulseSTFT),2));
 responseSpectrum = mean(abs(responseSTFT),2)/max(mean(abs(responseSTFT),2));
-irSpectrum = (responseSpectrum./impulseSpectrum).*scaleAmplitude;
+%irSpectrum = (responseSpectrum./impulseSpectrum).*scaleAmplitude;
+irSpectrum = responseSpectrum.*scaleAmplitude;
 
 % deconvolution
 irSTFT = responseSTFT./impulseSTFT;
@@ -43,10 +44,10 @@ f = fs/2*[0:nbins]'/nbins;
 t = [0.5:nframes-0.5]*nskip/fs;
 
 % figure(2);
-% plot(f, 20*log10(irSpectrum), '-'); grid;
+% plot(f, 20*log10(responseSpectrum), '-'); grid;
 % title('Spectrum');
 % xlabel('frequency, Hz'); ylabel('power, dB');
-% xlim([20 10000]);
+% xlim([20 1000]);
 
 %% find mode frequencies
 
@@ -57,10 +58,10 @@ nmode = length(fm);
 
 %index = [1 2 3 5 6 7 8 10 11 12 14 15 16 17 18 19 20 21 22 23 24 25 26 27 30 31 32 33 35 36 39 40 41 43];
 % index = [1 2 4 7 8 10 11 12];
-index = [1 2 3 6 7 8 10 11];
-nmode = length(index);
-fm = fm(index);
-gammam = gammam(index);
+% index = [1 2 3 6 7 8 10 11];
+% nmode = length(index);
+% fm = fm(index);
+% gammam = gammam(index);
 %of mode:34
 
 figure(3);

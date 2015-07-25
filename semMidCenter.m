@@ -1,10 +1,10 @@
 %% initialization
 
 % Old one...
-%impulseName = 'wav/semMidCenterImp.wav';
-%respName = 'wav/semMidCenterResp.wav';
-impulseName = 'wav/semMidCenterImp2.wav';
-respName = 'wav/semMidCenterResp2.wav';
+impulseName = 'wav/semMidCenterImp.wav';
+respName = 'wav/semMidCenterResp.wav';
+%impulseName = 'wav/semMidCenterImp2.wav';
+%respName = 'wav/semMidCenterResp2.wav';
 
 scaleAmplitude = 2;
 
