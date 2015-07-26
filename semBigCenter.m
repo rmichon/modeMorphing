@@ -56,12 +56,12 @@ fm = (im-1)/nbins*fs/2;
 
 nmode = length(fm);
 
-%index = [1 2 3 5 6 7 8 10 11 12 14 15 16 17 18 19 20 21 22 23 24 25 26 27 30 31 32 33 35 36 39 40 41 43];
+% index = [1 2 3 5 6 7 8 10 11 12 14 15 16 17 18 19 20 21 22 23 24 25 26 27 30 31 32 33 35 36 39 40 41 43];
 % index = [1 2 4 7 8 10 11 12];
-% index = [1 2 3 6 7 8 10 11];
-% nmode = length(index);
-% fm = fm(index);
-% gammam = gammam(index);
+index = [1 2 3 6 7 8 10 11];
+%nmode = length(index);
+%fm = fm(index);
+%gammam = gammam(index);
 %of mode:34
 
 figure(3);
