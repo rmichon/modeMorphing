@@ -6,7 +6,7 @@ respName = 'wav/semBigCenterResp.wav';
 %impulseName = 'wav/semBigCenterImp2.wav';
 %respName = 'wav/semBigCenterResp2.wav';
 
-scaleAmplitude = 80;
+scaleAmplitude = 200;
 
 % mode analysis
 nbins = 2048;   % stft analysis half bandwidth, bins
