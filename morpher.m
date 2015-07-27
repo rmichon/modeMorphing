@@ -9,20 +9,20 @@ interp = 0.47; % semi
 nbins = 2048; % FFT window size for theoritical IR
 nskip = 32; % FFT hop size for theoritical IR
 
-% change the file names in function of your needs...
-% file1Fm = fopen('modes/squareBigCenterFreq.txt','r');
-% file1Gm = fopen('modes/squareBigCenterGain.txt','r');
-% file1Rt60m = fopen('modes/squareBigCenterT60.txt','r');
-% file2Fm = fopen('modes/squareSmallCenterFreq.txt','r');
-% file2Gm = fopen('modes/squareSmallCenterGain.txt','r');
-% file2Rt60m = fopen('modes/squareSmallCenterT60.txt','r');
+%change the file names in function of your needs...
+file1Fm = fopen('modes/squareBigCenterFreq.txt','r');
+file1Gm = fopen('modes/squareBigCenterGain.txt','r');
+file1Rt60m = fopen('modes/squareBigCenterT60.txt','r');
+file2Fm = fopen('modes/squareSmallCenterFreq.txt','r');
+file2Gm = fopen('modes/squareSmallCenterGain.txt','r');
+file2Rt60m = fopen('modes/squareSmallCenterT60.txt','r');
 
-file1Fm = fopen('modes/semBigCenterFreq.txt','r');
-file1Gm = fopen('modes/semBigCenterGain.txt','r');
-file1Rt60m = fopen('modes/semBigCenterT60.txt','r');
-file2Fm = fopen('modes/semSmallCenterFreq.txt','r');
-file2Gm = fopen('modes/semSmallCenterGain.txt','r');
-file2Rt60m = fopen('modes/semSmallCenterT60.txt','r');
+% file1Fm = fopen('modes/semBigCenterFreq.txt','r');
+% file1Gm = fopen('modes/semBigCenterGain.txt','r');
+% file1Rt60m = fopen('modes/semBigCenterT60.txt','r');
+% file2Fm = fopen('modes/semSmallCenterFreq.txt','r');
+% file2Gm = fopen('modes/semSmallCenterGain.txt','r');
+% file2Rt60m = fopen('modes/semSmallCenterT60.txt','r');
 
 % file1Fm = fopen('modes/roundBigCenterFreq.txt','r');
 % file1Gm = fopen('modes/roundBigCenterGain.txt','r');
