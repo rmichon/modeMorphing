@@ -271,17 +271,17 @@ rt60mMorph = rt60m0(matchedIndex0) + (rt60m1(matchedIndex1)-rt60m0(matchedIndex0
 
 %% Plotting Frequeny Responses and Detected Modes 
 
-% figure(1);
-% plot(f0, irSpectrumDB0, '-', fm0(maxIndex0), gammam0(maxIndex0), 'o', fm0(matchedIndex0), gammam0(matchedIndex0), 'ro'); grid;
-% title('Detected Modes for Object 0');
-% xlabel('frequency, Hz'); ylabel('power, dB');
-% xlim([20 5000]);
-% 
-% figure(2);
-% plot(f1, irSpectrumDB1, '-', fm1(maxIndex1), gammam1(maxIndex1), 'o', fm1(matchedIndex1), gammam1(matchedIndex1), 'o'); grid;
-% title('Detected Modes for Object 1');
-% xlabel('frequency, Hz'); ylabel('power, dB');
-% xlim([20 5000]);
+figure(1);
+plot(f0, irSpectrumDB0, '-', fm0(maxIndex0), gammam0(maxIndex0), 'o', fm0(matchedIndex0), gammam0(matchedIndex0), 'ro'); grid;
+title('Detected Modes for Object 0');
+xlabel('frequency, Hz'); ylabel('power, dB');
+xlim([20 5000]);
+
+figure(2);
+plot(f1, irSpectrumDB1, '-', fm1(maxIndex1), gammam1(maxIndex1), 'o', fm1(matchedIndex1), gammam1(matchedIndex1), 'o'); grid;
+title('Detected Modes for Object 1');
+xlabel('frequency, Hz'); ylabel('power, dB');
+xlim([20 5000]);
 
 %% Plotting measured modes T60s and amplitudes
 
@@ -336,23 +336,23 @@ rt60mMorph = rt60m0(matchedIndex0) + (rt60m1(matchedIndex1)-rt60m0(matchedIndex0
 
 %% Plotting morphed modes against measured modes for middle object
 
-figure(5);
-subplot(2,1,1);
-stem(fmProof(maxIndexProof), gammamProof(maxIndexProof), 'blue');
-hold on;
-stem(fmMorph, gammamMorph, 'red');
-hold off;
-grid;
-title('Mode Amplitudes');
-xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
-xlim([20 3000]);
-subplot(2,1,2); 
-stem(fmProof(maxIndexProof), rt60mProof(maxIndexProof), 'blue');
-hold on;
-stem(fmMorph, rt60mMorph, 'red');
-hold off;
-grid;
-title('Mode T60s');
-xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
-xlim([20 3000]);
+% figure(5);
+% subplot(2,1,1);
+% stem(fmProof(maxIndexProof), gammamProof(maxIndexProof), 'blue');
+% hold on;
+% stem(fmMorph, gammamMorph, 'red');
+% hold off;
+% grid;
+% title('Mode Amplitudes');
+% xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
+% xlim([20 3000]);
+% subplot(2,1,2); 
+% stem(fmProof(maxIndexProof), rt60mProof(maxIndexProof), 'blue');
+% hold on;
+% stem(fmMorph, rt60mMorph, 'red');
+% hold off;
+% grid;
+% title('Mode T60s');
+% xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
+% xlim([20 3000]);
 
