@@ -29,6 +29,13 @@
 * NOTE: for the following steps, we did things manually because we had to rush but in practice (now that we know the results), we know that this can be done automatically. Thus, when I'll use the word "automatically" for the following steps, it might mean that this is something that we did manually in practice... For the ASA paper, we should say that things were done automatically because it makes more sense scintifically speaking :)... 
 * 
 
+### Overview of the Goals for Now
+
+* Carry out modal interpolation within a 2d matrix of 3d printed object. The "proofs" can be used both to validate the method and to icrease the resolution of the model.
+* Present this as a new method to make accurate physical models of 3d printed string instruments.
+* Check the "physical validity" of the method by modeling an intermediate state and comparing to "real world" measurements.
+* Link this to the existing literarture.
+
 ### Others
 
 * Don't forget to talk about the large data set and machine learning idea.

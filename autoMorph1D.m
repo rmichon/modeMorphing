@@ -8,10 +8,16 @@
 % - nmodes: the maximum number of modes to be considered
 % - nmodes: the maximum number of modes to be considered for "the proof"
 
-whichTest = 0;
-modeMatching = 1;
-nmodes = 30;
+whichTest = 2;
+pairingZoneWidth = 100;
+modeMatching = 0;
+nmodes = 20;
 nmodesProof = 30;
+plotModesAndSpectrum = 0;
+plotModesGainAndT60 = 0;
+plotTransposedModes = 0;
+plotMorphedModes = 0;
+saveModes = 1;
 
 %% STFT Parameters
 
@@ -227,41 +233,43 @@ maxIndexProof = find(ismember(gammamProof,sorted_gammamProof(1:nmodesProof)));
 
 %% Pairing Modes
 
-% Measuring the evolution of the first mode
-transpositionIndex = fm1(maxIndex1(1)) - fm0(maxIndex0(1));
+% Measuring the evolution of the first mode (we assume that it's A0)
+transpositionRatio = fm1(maxIndex1(1)) / fm0(maxIndex0(1));
 
-scaledFm0 = fm0 + transpositionIndex;
+scaledFm0 = fm0*transpositionRatio;
 pairedIndex1 = zeros(nmodes,1);
 for m = [1:nmodes]
-    [idx idx] = min(abs(fm1-scaledFm0(maxIndex0(m))));
-    pairedIndex1(m) = idx;
+    [minIdx minIdx] = min(abs(fm1-(scaledFm0(maxIndex0(m))-(pairingZoneWidth/2))));
+    [maxIdx maxIdx] = min(abs(fm1-(scaledFm0(maxIndex0(m))+(pairingZoneWidth/2))));
+    sortedZone = sort(gammam1(minIdx:maxIdx),'descend');
+    pairedIndex1(m) = find(ismember(gammam1,sortedZone(1)));
 end
 
-scaledFm1 = fm1 - transpositionIndex;
+scaledFm1 = fm1/transpositionRatio;
 pairedIndex0 = zeros(nmodes,1);
 for m = [1:nmodes]
-    [idx idx] = min(abs(fm0-scaledFm1(maxIndex1(m))));
-    pairedIndex0(m) = idx;
+    [minIdx minIdx] = min(abs(fm0-(scaledFm1(maxIndex1(m))-(pairingZoneWidth/2))));
+    [maxIdx maxIdx] = min(abs(fm0-(scaledFm1(maxIndex1(m))+(pairingZoneWidth/2))));
+    sortedZone = sort(gammam0(minIdx:maxIdx),'descend');
+    pairedIndex0(m) = find(ismember(gammam0,sortedZone(1)));
 end
 
 clear matchedIndex0;
 clear matchedIndex1;
 cnt = 1;
-for m = [1:nmodes]
-    if modeMatching == 1
+if modeMatching == 1
+    for m = [1:nmodes]
         if maxIndex0(m) == pairedIndex0(m) && maxIndex1(m) == pairedIndex1(m)
             matchedIndex0(cnt) = pairedIndex0(m);
             matchedIndex1(cnt) = pairedIndex1(m);
             cnt = cnt+1;
         end
-    else 
-        matchedIndex0(cnt) = pairedIndex0(m);
-        matchedIndex1(cnt) = pairedIndex1(m);
-        cnt = cnt+1;
     end
+    disp(sprintf('%i modes were matched',(cnt-1)));
+else
+    matchedIndex0 = maxIndex0;
+    matchedIndex1 = pairedIndex1;
 end
-
-disp(sprintf('%i modes were matched',(cnt-1)));
 
 %% Computing Theoretical Response
 
@@ -271,88 +279,142 @@ rt60mMorph = rt60m0(matchedIndex0) + (rt60m1(matchedIndex1)-rt60m0(matchedIndex0
 
 %% Plotting Frequeny Responses and Detected Modes 
 
-figure(1);
-plot(f0, irSpectrumDB0, '-', fm0(maxIndex0), gammam0(maxIndex0), 'o', fm0(matchedIndex0), gammam0(matchedIndex0), 'ro'); grid;
-title('Detected Modes for Object 0');
-xlabel('frequency, Hz'); ylabel('power, dB');
-xlim([20 5000]);
+plotModesCnt = 1:length(matchedIndex0);
 
-figure(2);
-plot(f1, irSpectrumDB1, '-', fm1(maxIndex1), gammam1(maxIndex1), 'o', fm1(matchedIndex1), gammam1(matchedIndex1), 'o'); grid;
-title('Detected Modes for Object 1');
-xlabel('frequency, Hz'); ylabel('power, dB');
-xlim([20 5000]);
+if plotModesAndSpectrum == 1
+    figure(1);
+    plot(f0, irSpectrumDB0, '-', fm0, gammam0, 'o', fm0(matchedIndex0), gammam0(matchedIndex0), 'ro'); grid;
+    t = text(fm0(matchedIndex0),gammam0(matchedIndex0)+1,num2str(plotModesCnt'));
+    set(t,'FontSize', 13);
+    set(t,'FontWeight', 'bold');
+    title('Detected Modes for Object 0');
+    xlabel('frequency, Hz'); ylabel('power, dB');
+    xlim([20 5000]);
+
+    figure(2);
+    plot(f1, irSpectrumDB1, '-', fm1, gammam1, 'o', fm1(matchedIndex1), gammam1(matchedIndex1), 'o'); grid;
+    t = text(fm1(matchedIndex1),gammam1(matchedIndex1)+1,num2str(plotModesCnt'));
+    set(t,'FontSize', 13);
+    set(t,'FontWeight', 'bold');
+    title('Detected Modes for Object 1');
+    xlabel('frequency, Hz'); ylabel('power, dB');
+    xlim([20 5000]);
+end
 
 %% Plotting measured modes T60s and amplitudes
 
-% figure(3);
-% subplot(2,1,1);
-% stem(fm0(matchedIndex0), gammam0(matchedIndex0)); grid;
-% title('Mode Amplitudes');
-% xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
-% xlim([20 5000]);
-% subplot(2,1,2); 
-% stem(fm0(matchedIndex0), rt60m0(matchedIndex0)); grid;
-% title('Mode T60s');
-% xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
-% xlim([20 5000]);
-% 
-% figure(4);
-% subplot(2,1,1);
-% stem(fm1(matchedIndex1), gammam1(matchedIndex1)); grid;
-% title('Mode Amplitudes');
-% xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
-% xlim([20 5000]);
-% subplot(2,1,2); 
-% stem(fm1(matchedIndex1), rt60m1(matchedIndex1)); grid;
-% title('Mode T60s');
-% xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
-% xlim([20 5000]);
+if plotModesGainAndT60 == 1
+    figure(3);
+    subplot(2,1,1);
+    stem(fm0(matchedIndex0), gammam0(matchedIndex0)); grid;
+    t = text(fm0(matchedIndex0),gammam0(matchedIndex0),num2str(plotModesCnt'));
+    set(t,'FontSize', 13);
+    set(t,'FontWeight', 'bold');
+    title('Mode Amplitudes');
+    xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
+    xlim([20 5000]);
+    subplot(2,1,2); 
+    stem(fm0(matchedIndex0), rt60m0(matchedIndex0)); grid;
+    t = text(fm0(matchedIndex0),rt60m0(matchedIndex0),num2str(plotModesCnt'));
+    set(t,'FontSize', 13);
+    set(t,'FontWeight', 'bold');
+    title('Mode T60s');
+    xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
+    xlim([20 5000]);
+
+    figure(4);
+    subplot(2,1,1);
+    stem(fm1(matchedIndex1), gammam1(matchedIndex1)); grid;
+    t = text(fm1(matchedIndex1),gammam1(matchedIndex1),num2str(plotModesCnt'));
+    set(t,'FontSize', 13);
+    set(t,'FontWeight', 'bold');
+    title('Mode Amplitudes');
+    xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
+    xlim([20 5000]);
+    subplot(2,1,2); 
+    stem(fm1(matchedIndex1), rt60m1(matchedIndex1)); grid;
+    t = text(fm1(matchedIndex1),rt60m1(matchedIndex1),num2str(plotModesCnt'));
+    set(t,'FontSize', 13);
+    set(t,'FontWeight', 'bold');
+    title('Mode T60s');
+    xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
+    xlim([20 5000]);
+end
 
 %% Plotting transposed modes against measured modes 
 
-% figure(4);
-% subplot(2,1,1);
-% oneValue = repmat(1,1,length(matchedIndex1));
-% stem(fm1(matchedIndex1), oneValue, 'blue'); % measured modes
-% hold on;
-% stem(scaledFm0(matchedIndex0), oneValue, 'red'); % transposed modes
-% hold off;
-% grid;
-% set(gca,'YTickLabel',[])
-% xlabel('mode frequency, Hz');
-% title('Object 1 ');
-% xlim([20 2000]);
-% subplot(2,1,2);
-% stem(fm0(matchedIndex0), oneValue, 'blue'); % measured modes
-% hold on;
-% stem(scaledFm1(matchedIndex1), oneValue, 'red'); % transposed modes
-% hold off;
-% grid;
-% set(gca,'YTickLabel',[])
-% xlabel('mode frequency, Hz');
-% title('Object 0');
-% xlim([20 2000]);
+if plotTransposedModes == 1
+    figure(5);
+    subplot(2,1,1);
+    stem(fm1, gammam1, 'blue'); % measured modes
+    hold on;
+    stem(scaledFm0(matchedIndex0), repmat(0,1,length(matchedIndex0)), 'red'); % transposed modes
+    hold off;
+    grid;
+    xlabel('mode frequency, Hz');
+    title('Object 1 ');
+    xlim([20 3000]);
+    subplot(2,1,2);
+    stem(fm0, gammam0, 'blue'); % measured modes
+    hold on;
+    stem(scaledFm1(matchedIndex1), repmat(0,1,length(matchedIndex1)), 'red'); % transposed modes
+    hold off;
+    grid;
+    xlabel('mode frequency, Hz');
+    title('Object 0');
+    xlim([20 3000]);
+end
 
 %% Plotting morphed modes against measured modes for middle object
 
-% figure(5);
-% subplot(2,1,1);
-% stem(fmProof(maxIndexProof), gammamProof(maxIndexProof), 'blue');
-% hold on;
-% stem(fmMorph, gammamMorph, 'red');
-% hold off;
-% grid;
-% title('Mode Amplitudes');
-% xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
-% xlim([20 3000]);
-% subplot(2,1,2); 
-% stem(fmProof(maxIndexProof), rt60mProof(maxIndexProof), 'blue');
-% hold on;
-% stem(fmMorph, rt60mMorph, 'red');
-% hold off;
-% grid;
-% title('Mode T60s');
-% xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
-% xlim([20 3000]);
+if plotMorphedModes == 1
+    figure(5);
+    subplot(2,1,1);
+    stem(fmProof(maxIndexProof), gammamProof(maxIndexProof), 'blue');
+    hold on;
+    stem(fmMorph, gammamMorph, 'red');
+    hold off;
+    grid;
+    title('Mode Amplitudes');
+    xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
+    xlim([20 3000]);
+    subplot(2,1,2); 
+    stem(fmProof(maxIndexProof), rt60mProof(maxIndexProof), 'blue');
+    hold on;
+    stem(fmMorph, rt60mMorph, 'red');
+    hold off;
+    grid;
+    title('Mode T60s');
+    xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
+    xlim([20 3000]);
+end
 
+if saveModes == 1
+    fileFreq0 = fopen('modes/0Freq.txt','w');
+    fileGain0 = fopen('modes/0Gain.txt','w');
+    fileT600 = fopen('modes/0T60.txt','w');
+    fprintf(fileFreq0,'%f\n',fm0(maxIndex0));
+    fclose(fileFreq0);
+    fprintf(fileGain0,'%f\n',gammam0(maxIndex0));
+    fclose(fileGain0);
+    fprintf(fileT600,'%f\n',rt60m0(maxIndex0));
+    fclose(fileT600);
+    fileFreq1 = fopen('modes/1Freq.txt','w');
+    fileGain1 = fopen('modes/1Gain.txt','w');
+    fileT601 = fopen('modes/1T60.txt','w');
+    fprintf(fileFreq1,'%f\n',fmProof(maxIndexProof));
+    fclose(fileFreq1);
+    fprintf(fileGain1,'%f\n',gammamProof(maxIndexProof));
+    fclose(fileGain1);
+    fprintf(fileT601,'%f\n',rt60mProof(maxIndexProof));
+    fclose(fileT601);
+    fileFreq2 = fopen('modes/2Freq.txt','w');
+    fileGain2 = fopen('modes/2Gain.txt','w');
+    fileT602 = fopen('modes/2T60.txt','w');
+    fprintf(fileFreq2,'%f\n',fm1(maxIndex1));
+    fclose(fileFreq2);
+    fprintf(fileGain2,'%f\n',gammam1(maxIndex1));
+    fclose(fileGain2);
+    fprintf(fileT602,'%f\n',rt60m1(maxIndex1));
+    fclose(fileT602);
+end
