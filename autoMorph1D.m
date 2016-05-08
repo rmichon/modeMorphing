@@ -379,6 +379,10 @@ if plotMorphedModes == 1
 end
 
 if saveModes == 1
+    g0 = power(10,gammam0/20);
+    gProof = power(10,gammamProof/20);
+    g1 = power(10,gammam1/20);
+    
     fileFreq0 = fopen(strcat(strcat('modes/',name0),'Freq.lib'),'w');
     fileGain0 = fopen(strcat(strcat('modes/',name0),'Gain.lib'),'w');
     fileT600 = fopen(strcat(strcat('modes/',name0),'T60.lib'),'w');
@@ -389,8 +393,8 @@ if saveModes == 1
     fprintf(fileFreq0,strcat(strcat(name0,'Freq'),strcat('(i) = take(i+1,',strcat(name0,'ModeFreq);\n'))));
     fclose(fileFreq0);
     fprintf(fileGain0,strcat(name0,'ModeGain = ('));
-    fprintf(fileGain0,'%f',gammam0(maxIndex0(1)));
-    fprintf(fileGain0,', %f ',gammam0(maxIndex0(2:length(maxIndex0))));
+    fprintf(fileGain0,'%f',g0(maxIndex0(1)));
+    fprintf(fileGain0,', %f ',g0(maxIndex0(2:length(maxIndex0))));
     fprintf(fileGain0,');\n');
     fprintf(fileGain0,strcat(strcat(name0,'Gain'),strcat('(i) = take(i+1,',strcat(name0,'ModeGain);\n'))));
     fclose(fileGain0);
@@ -411,8 +415,8 @@ if saveModes == 1
     fprintf(fileFreq1,strcat(strcat(nameProof,'Freq'),strcat('(i) = take(i+1,',strcat(nameProof,'ModeFreq);\n'))));
     fclose(fileFreq1);
     fprintf(fileGain1,strcat(nameProof,'ModeGain = ('));
-    fprintf(fileGain1,'%f',gammamProof(maxIndexProof(1)));
-    fprintf(fileGain1,', %f ',gammamProof(maxIndexProof(2:length(maxIndexProof))));
+    fprintf(fileGain1,'%f',gProof(maxIndexProof(1)));
+    fprintf(fileGain1,', %f ',gProof(maxIndexProof(2:length(maxIndexProof))));
     fprintf(fileGain1,');\n');
     fprintf(fileGain1,strcat(strcat(nameProof,'Gain'),strcat('(i) = take(i+1,',strcat(nameProof,'ModeGain);\n'))));
     fclose(fileGain1);
@@ -433,8 +437,8 @@ if saveModes == 1
     fprintf(fileFreq2,strcat(strcat(name1,'Freq'),strcat('(i) = take(i+1,',strcat(name1,'ModeFreq);\n'))));
     fclose(fileFreq2);
     fprintf(fileGain2,strcat(name1,'ModeGain = ('));
-    fprintf(fileGain2,'%f',gammam1(maxIndex1(1)));
-    fprintf(fileGain2,', %f ',gammam1(maxIndex1(2:length(maxIndex1))));
+    fprintf(fileGain2,'%f',g1(maxIndex1(1)));
+    fprintf(fileGain2,', %f ',g1(maxIndex1(2:length(maxIndex1))));
     fprintf(fileGain2,');\n');
     fprintf(fileGain2,strcat(strcat(name1,'Gain'),strcat('(i) = take(i+1,',strcat(name1,'ModeGain);\n'))));
     fclose(fileGain2);
