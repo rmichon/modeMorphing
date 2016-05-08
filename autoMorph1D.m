@@ -11,8 +11,8 @@
 whichTest = 2;
 pairingZoneWidth = 100;
 modeMatching = 0;
-nmodes = 20;
-nmodesProof = 30;
+nmodes = 40;
+nmodesProof = 40;
 plotModesAndSpectrum = 0;
 plotModesGainAndT60 = 0;
 plotTransposedModes = 0;
@@ -31,52 +31,34 @@ tmin = 0.0;     % minimum response time, seconds
 %% Init with squareBig -> squareSmall
 
 if whichTest == 0 % squareBig -> squareSmall
-    impulseName0 = 'wav/squareBigCenterImp.wav';
-    respName0 = 'wav/squareBigCenterResp.wav';
-    impulseName1 = 'wav/squareSmallCenterImp.wav';
-    respName1 = 'wav/squareSmallCenterResp.wav';
-    impulseNameProof = 'wav/squareMidCenterImp.wav';
-    respNameProof = 'wav/squareMidCenterResp.wav';
+    name0 = 'squareBigCenter';
+    name1 = 'squareSmallCenter';
+    nameProof = 'squareMidCenter';
     interp = 0.55; % TODO: not tested
 elseif whichTest == 1 % semBig -> semSmall
-    impulseName0 = 'wav/semBigCenterImp.wav';
-    respName0 = 'wav/semBigCenterResp.wav';
-    impulseName1 = 'wav/semSmallCenterImp.wav';
-    respName1 = 'wav/semSmallCenterResp.wav';
-    impulseNameProof = 'wav/semMidCenterImp.wav';
-    respNameProof = 'wav/semMidCenterResp.wav';
+    name0 = 'semBigCenter';
+    name1 = 'semSmallCenter';
+    nameProof = 'semMidCenter';
     interp = 0.47; % TODO: not tested
 elseif whichTest == 2 % roundBig -> roundSmall
-    impulseName0 = 'wav/roundBigCenterImp.wav';
-    respName0 = 'wav/roundBigCenterResp.wav';
-    impulseName1 = 'wav/roundSmallCenterImp.wav';
-    respName1 = 'wav/roundSmallCenterResp.wav';
-    impulseNameProof = 'wav/roundMidCenterImp.wav';
-    respNameProof = 'wav/roundMidCenterResp.wav';
+    name0 = 'roundBigCenter';
+    name1 = 'roundSmallCenter';
+    nameProof = 'roundMidCenter';
     interp = 0.42; % TODO: not tested
 elseif whichTest == 3 % squareBig -> roundBig
-    impulseName0 = 'wav/squareBigCenterImp.wav';
-    respName0 = 'wav/squareBigCenterResp.wav';
-    impulseName1 = 'wav/roundBigCenterImp.wav';
-    respName1 = 'wav/roundBigCenterResp.wav';
-    impulseNameProof = 'wav/semBigCenterImp.wav';
-    respNameProof = 'wav/semBigCenterResp.wav';
+    name0 = 'squareBigCenter';
+    name1 = 'roundBigCenter';
+    nameProof = 'semBigCenter';
     interp = 0.42; % TODO: not tested
 elseif whichTest == 4 % squareSmall -> roundSmall
-    impulseName0 = 'wav/squareSmallCenterImp.wav';
-    respName0 = 'wav/squareSmallCenterResp.wav';
-    impulseName1 = 'wav/roundSmallCenterImp.wav';
-    respName1 = 'wav/roundSmallCenterResp.wav';
-    impulseNameProof = 'wav/semSmallCenterImp.wav';
-    respNameProof = 'wav/semSmallCenterResp.wav';
+    name0 = 'squareSmallCenter';
+    name1 = 'roundSmallCenter';
+    nameProof = 'semSmallCenter';
     interp = 0.42; % TODO: not tested
 elseif whichTest == 5 % squareBig -> roundSmall
-    impulseName0 = 'wav/squareBigCenterImp.wav';
-    respName0 = 'wav/squareBigCenterResp.wav';
-    impulseName1 = 'wav/roundSmallCenterImp.wav';
-    respName1 = 'wav/roundSmallCenterResp.wav';
-    impulseNameProof = 'wav/semMidCenterImp.wav';
-    respNameProof = 'wav/semMidCenterResp.wav';
+    name0 = 'squareBigCenter';
+    name1 = 'roundSmallCenter';
+    nameProof = 'semMidCenter';
     interp = 0.42; % TODO: not tested
 elseif whichTest == 6 % roundBig -> squareSmall
     impulseName0 = 'wav/roundBigCenterImp.wav';
@@ -87,6 +69,13 @@ elseif whichTest == 6 % roundBig -> squareSmall
     respNameProof = 'wav/semMidCenterResp.wav';
     interp = 0.42; % TODO: not tested
 end
+
+impulseName0 = strcat(strcat('wav/',name0),'Imp.wav');
+respName0 = strcat(strcat('wav/',name0),'Resp.wav');
+impulseName1 = strcat(strcat('wav/',name1),'Imp.wav');
+respName1 = strcat(strcat('wav/',name1),'Resp.wav');
+impulseNameProof = strcat(strcat('wav/',nameProof),'Imp.wav');
+respNameProof = strcat(strcat('wav/',nameProof),'Resp.wav');
 
 %% compute STFTs and plot the response spectrogram
 
@@ -390,31 +379,60 @@ if plotMorphedModes == 1
 end
 
 if saveModes == 1
-    fileFreq0 = fopen('modes/0Freq.txt','w');
-    fileGain0 = fopen('modes/0Gain.txt','w');
-    fileT600 = fopen('modes/0T60.txt','w');
-    fprintf(fileFreq0,'%f\n',fm0(maxIndex0));
+    fileFreq0 = fopen(strcat(strcat('modes/',name0),'Freq.lib'),'w');
+    fileGain0 = fopen(strcat(strcat('modes/',name0),'Gain.lib'),'w');
+    fileT600 = fopen(strcat(strcat('modes/',name0),'T60.lib'),'w');
+    fprintf(fileFreq0,strcat(name0,'Freq = ('));
+    fprintf(fileFreq0,'%f',fm0(maxIndex0(1)));
+    fprintf(fileFreq0,', %f ',fm0(maxIndex0(2:length(maxIndex0))));
+    fprintf(fileFreq0,');\n');
     fclose(fileFreq0);
-    fprintf(fileGain0,'%f\n',gammam0(maxIndex0));
+    fprintf(fileGain0,strcat(name0,'Gain = ('));
+    fprintf(fileGain0,'%f',gammam0(maxIndex0(1)));
+    fprintf(fileGain0,', %f ',gammam0(maxIndex0(2:length(maxIndex0))));
+    fprintf(fileGain0,');\n');
     fclose(fileGain0);
-    fprintf(fileT600,'%f\n',rt60m0(maxIndex0));
+    fprintf(fileT600,strcat(name0,'T60 = ('));
+    fprintf(fileT600,'%f',rt60m0(maxIndex0(1)));
+    fprintf(fileT600,', %f ',rt60m0(maxIndex0(2:length(maxIndex0))));
+    fprintf(fileT600,');\n');
     fclose(fileT600);
-    fileFreq1 = fopen('modes/1Freq.txt','w');
-    fileGain1 = fopen('modes/1Gain.txt','w');
-    fileT601 = fopen('modes/1T60.txt','w');
-    fprintf(fileFreq1,'%f\n',fmProof(maxIndexProof));
+   
+    fileFreq1 = fopen(strcat(strcat('modes/',nameProof),'Freq.lib'),'w');
+    fileGain1 = fopen(strcat(strcat('modes/',nameProof),'Gain.lib'),'w');
+    fileT601 = fopen(strcat(strcat('modes/',nameProof),'T60.lib'),'w');
+    fprintf(fileFreq1,strcat(nameProof,'Freq = ('));
+    fprintf(fileFreq1,'%f',fmProof(maxIndexProof(1)));
+    fprintf(fileFreq1,', %f ',fmProof(maxIndexProof(2:length(maxIndexProof))));
+    fprintf(fileFreq1,');\n');
     fclose(fileFreq1);
-    fprintf(fileGain1,'%f\n',gammamProof(maxIndexProof));
+    fprintf(fileGain1,strcat(nameProof,'Gain = ('));
+    fprintf(fileGain1,'%f',gammamProof(maxIndexProof(1)));
+    fprintf(fileGain1,', %f ',gammamProof(maxIndexProof(2:length(maxIndexProof))));
+    fprintf(fileGain1,');\n');
     fclose(fileGain1);
-    fprintf(fileT601,'%f\n',rt60mProof(maxIndexProof));
+    fprintf(fileT601,strcat(nameProof,'T60 = ('));
+    fprintf(fileT601,'%f',rt60mProof(maxIndexProof(1)));
+    fprintf(fileT601,', %f ',rt60mProof(maxIndexProof(2:length(maxIndexProof))));
+    fprintf(fileT601,');\n');
     fclose(fileT601);
-    fileFreq2 = fopen('modes/2Freq.txt','w');
-    fileGain2 = fopen('modes/2Gain.txt','w');
-    fileT602 = fopen('modes/2T60.txt','w');
-    fprintf(fileFreq2,'%f\n',fm1(maxIndex1));
+    
+    fileFreq2 = fopen(strcat(strcat('modes/',name1),'Freq.lib'),'w');
+    fileGain2 = fopen(strcat(strcat('modes/',name1),'Gain.lib'),'w');
+    fileT602 = fopen(strcat(strcat('modes/',name1),'T60.lib'),'w');
+    fprintf(fileFreq2,strcat(name1,'Freq = ('));
+    fprintf(fileFreq2,'%f',fm1(maxIndex1(1)));
+    fprintf(fileFreq2,', %f ',fm1(maxIndex1(2:length(maxIndex1))));
+    fprintf(fileFreq2,');\n');
     fclose(fileFreq2);
-    fprintf(fileGain2,'%f\n',gammam1(maxIndex1));
+    fprintf(fileGain2,strcat(name1,'Gain = ('));
+    fprintf(fileGain2,'%f',gammam1(maxIndex1(1)));
+    fprintf(fileGain2,', %f ',gammam1(maxIndex1(2:length(maxIndex1))));
+    fprintf(fileGain2,');\n');
     fclose(fileGain2);
-    fprintf(fileT602,'%f\n',rt60m1(maxIndex1));
+    fprintf(fileT602,strcat(name1,'T60 = ('));
+    fprintf(fileT602,'%f',rt60m1(maxIndex1(1)));
+    fprintf(fileT602,', %f ',rt60m1(maxIndex1(2:length(maxIndex1))));
+    fprintf(fileT602,');\n');
     fclose(fileT602);
 end
