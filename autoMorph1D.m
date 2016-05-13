@@ -1,14 +1,25 @@
+%% autoMorph1D.m
+% TODO: add description here
+
+
 %% Notes
 % - Currently, the deconvolved IR is used to detect the frequency and the
 %   amplitude of the modes and the response IR is used to detect the T60.
 
 %% Global Parameters
-% - whichTest (0-6): which test to run (see next section to see options) 
+% - whichTest (0-6): which test to run (see next section to see options)
+% - pairingZoneWidth: width of the zone to be considered for mode pairing (Hz)
 % - modeMatching (0-1): tests if modes are matching both ways
 % - nmodes: the maximum number of modes to be considered
-% - nmodes: the maximum number of modes to be considered for "the proof"
+% - nmodesProof: the maximum number of modes to be considered for "the proof"
+% - plotModesAndSpectrum: plot the frequency response of the origin and
+%   of the target and the nmodes (in red) and the other modes (in green)
+% - plotModesGainAndT60: plot measured gain and T60 for the nmodes for both
+%   the origin and the target
+% - plotTransposedModes: plot the tansposed modes of the origin (in red) 
+%   against the measured modes of the target (in green)
 
-whichTest = 2;
+whichTest = 0;
 pairingZoneWidth = 100;
 modeMatching = 0;
 nmodes = 40;
@@ -16,8 +27,8 @@ nmodesProof = 40;
 plotModesAndSpectrum = 0;
 plotModesGainAndT60 = 0;
 plotTransposedModes = 0;
-plotMorphedModes = 0;
-saveModes = 1;
+plotMorphedModes = 1;
+saveModes = 0;
 
 %% STFT Parameters
 
@@ -61,15 +72,13 @@ elseif whichTest == 5 % squareBig -> roundSmall
     nameProof = 'semMidCenter';
     interp = 0.42; % TODO: not tested
 elseif whichTest == 6 % roundBig -> squareSmall
-    impulseName0 = 'wav/roundBigCenterImp.wav';
-    respName0 = 'wav/roundBigCenterResp.wav';
-    impulseName1 = 'wav/squareSmallCenterImp.wav';
-    respName1 = 'wav/squareSmallCenterResp.wav';
-    impulseNameProof = 'wav/semMidCenterImp.wav';
-    respNameProof = 'wav/semMidCenterResp.wav';
+    name0 = 'roundBigCenter';
+    name1 = 'squareSmallCenter';
+    nameProof = 'semMidCenter';
     interp = 0.42; % TODO: not tested
 end
 
+% loading the impulse responses
 impulseName0 = strcat(strcat('wav/',name0),'Imp.wav');
 respName0 = strcat(strcat('wav/',name0),'Resp.wav');
 impulseName1 = strcat(strcat('wav/',name1),'Imp.wav');
@@ -105,8 +114,7 @@ impulseSTFTProof = stft(sum(impulseProof,2),nbins,nskip);
 %responseSTFT1 = ftgram(sum(response1,2), fs, 'music', 'nbins', nbins, 'nskip', nskip);
 responseSTFTProof = stft(sum(responseProof,2),nbins, nskip); % Comment if plotting spectrogram
 
-%% compute impulse response and plot it
-% TODO from here should do steps for 1 (with only have 0 here)
+%% compute impulse response (deconvolution) and plot it
 
 impulseSpectrum0 = mean(abs(impulseSTFT0),2)/max(mean(abs(impulseSTFT0),2));
 responseSpectrum0 = mean(abs(responseSTFT0),2)/max(mean(abs(responseSTFT0),2));
@@ -138,7 +146,7 @@ tProof = [0.5:nframesProof-0.5]*nskip/fs;
 
 %% find mode frequencies and amplitudes
 
-[gammam0, im0] = localmax(irSpectrumDB0);
+[gammam0, im0] = localmax(irSpectrumDB0); % just using simple peak detection
 gammam0 = gammam0-max(gammam0);
 fm0 = (im0-1)/nbins*fs/2;
 nmode0 = length(fm0);
@@ -154,6 +162,7 @@ fmProof = (imProof-1)/nbins*fs/2;
 nmodeProof = length(fmProof);
 
 %% estimate T60s
+% We use a simple graphical method
 
 delta0 = round(offset*fs/nskip);
 rt60m0 = zeros(nmode0,1);
@@ -210,6 +219,7 @@ for m = [1:nmodeProof],
 end;
 
 %% detecting the most powerful modes 
+% and store their index...
 
 sorted_gammam0 = sort(gammam0,'descend');
 maxIndex0 = find(ismember(gammam0,sorted_gammam0(1:nmodes)));
@@ -225,7 +235,10 @@ maxIndexProof = find(ismember(gammamProof,sorted_gammamProof(1:nmodesProof)));
 % Measuring the evolution of the first mode (we assume that it's A0)
 transpositionRatio = fm1(maxIndex1(1)) / fm0(maxIndex0(1));
 
+% scaling the modes of the origin
 scaledFm0 = fm0*transpositionRatio;
+
+% pairing the modes of the origin with the modes of the target
 pairedIndex1 = zeros(nmodes,1);
 for m = [1:nmodes]
     [minIdx minIdx] = min(abs(fm1-(scaledFm0(maxIndex0(m))-(pairingZoneWidth/2))));
