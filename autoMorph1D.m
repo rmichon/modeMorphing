@@ -19,11 +19,7 @@
 % - plotTransposedModes: plot the tansposed modes of the origin (in red) 
 %   against the measured modes of the target (in green)
 
-whichTest = 0;
-pairingZoneWidth = 100;
-modeMatching = 0;
-nmodes = 40;
-nmodesProof = 40;
+whichTest = 6;
 plotModesAndSpectrum = 0;
 plotModesGainAndT60 = 0;
 plotTransposedModes = 0;
@@ -45,37 +41,65 @@ if whichTest == 0 % squareBig -> squareSmall
     name0 = 'squareBigCenter';
     name1 = 'squareSmallCenter';
     nameProof = 'squareMidCenter';
-    interp = 0.55; % TODO: not tested
+    interp = 0.55; 
+    pairingZoneWidth = 100;
+    modeMatching = 0;
+    nmodes = 40;
+    nmodesProof = 40;
 elseif whichTest == 1 % semBig -> semSmall
     name0 = 'semBigCenter';
     name1 = 'semSmallCenter';
     nameProof = 'semMidCenter';
-    interp = 0.47; % TODO: not tested
+    interp = 0.0; 
+    pairingZoneWidth = 100;
+    modeMatching = 0;
+    nmodes = 40;
+    nmodesProof = 40;
 elseif whichTest == 2 % roundBig -> roundSmall
     name0 = 'roundBigCenter';
     name1 = 'roundSmallCenter';
     nameProof = 'roundMidCenter';
-    interp = 0.42; % TODO: not tested
+    interp = 0.42; 
+    pairingZoneWidth = 100;
+    modeMatching = 0;
+    nmodes = 40;
+    nmodesProof = 40;
 elseif whichTest == 3 % squareBig -> roundBig
     name0 = 'squareBigCenter';
     name1 = 'roundBigCenter';
     nameProof = 'semBigCenter';
-    interp = 0.42; % TODO: not tested
+    interp = 0.5; % TODO: not tested
+    pairingZoneWidth = 100;
+    modeMatching = 0;
+    nmodes = 40;
+    nmodesProof = 40;
 elseif whichTest == 4 % squareSmall -> roundSmall
     name0 = 'squareSmallCenter';
     name1 = 'roundSmallCenter';
     nameProof = 'semSmallCenter';
-    interp = 0.42; % TODO: not tested
+    interp = 0.42; 
+    pairingZoneWidth = 100;
+    modeMatching = 0;
+    nmodes = 40;
+    nmodesProof = 40;
 elseif whichTest == 5 % squareBig -> roundSmall
     name0 = 'squareBigCenter';
     name1 = 'roundSmallCenter';
     nameProof = 'semMidCenter';
-    interp = 0.42; % TODO: not tested
+    interp = 0.33;
+    pairingZoneWidth = 100;
+    modeMatching = 0;
+    nmodes = 40;
+    nmodesProof = 40;
 elseif whichTest == 6 % roundBig -> squareSmall
     name0 = 'roundBigCenter';
     name1 = 'squareSmallCenter';
     nameProof = 'semMidCenter';
-    interp = 0.42; % TODO: not tested
+    interp = 0.42;
+    pairingZoneWidth = 100;
+    modeMatching = 0;
+    nmodes = 40;
+    nmodesProof = 40;
 end
 
 % loading the impulse responses
@@ -287,19 +311,19 @@ if plotModesAndSpectrum == 1
     figure(1);
     plot(f0, irSpectrumDB0, '-', fm0, gammam0, 'o', fm0(matchedIndex0), gammam0(matchedIndex0), 'ro'); grid;
     t = text(fm0(matchedIndex0),gammam0(matchedIndex0)+1,num2str(plotModesCnt'));
-    set(t,'FontSize', 13);
-    set(t,'FontWeight', 'bold');
-    title('Detected Modes for Object 0');
-    xlabel('frequency, Hz'); ylabel('power, dB');
+    %set(t,'FontSize', 13);
+    %set(t,'FontWeight', 'bold');
+    %title('Detected Modes for Object 0');
+    xlabel('Frequency, Hz'); ylabel('Power, dB');
     xlim([20 5000]);
 
     figure(2);
     plot(f1, irSpectrumDB1, '-', fm1, gammam1, 'o', fm1(matchedIndex1), gammam1(matchedIndex1), 'o'); grid;
     t = text(fm1(matchedIndex1),gammam1(matchedIndex1)+1,num2str(plotModesCnt'));
-    set(t,'FontSize', 13);
-    set(t,'FontWeight', 'bold');
-    title('Detected Modes for Object 1');
-    xlabel('frequency, Hz'); ylabel('power, dB');
+    %set(t,'FontSize', 13);
+    %set(t,'FontWeight', 'bold');
+    %title('Detected Modes for Object 1');
+    xlabel('Frequency, Hz'); ylabel('Power, dB');
     xlim([20 5000]);
 end
 
@@ -310,36 +334,36 @@ if plotModesGainAndT60 == 1
     subplot(2,1,1);
     stem(fm0(matchedIndex0), gammam0(matchedIndex0)); grid;
     t = text(fm0(matchedIndex0),gammam0(matchedIndex0),num2str(plotModesCnt'));
-    set(t,'FontSize', 13);
-    set(t,'FontWeight', 'bold');
-    title('Mode Amplitudes');
-    xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
+    % set(t,'FontSize', 13);
+    % set(t,'FontWeight', 'bold');
+    % title('Mode Amplitudes');
+    xlabel('Mode Frequency, Hz'); ylabel('Amplitude, dB');
     xlim([20 5000]);
     subplot(2,1,2); 
     stem(fm0(matchedIndex0), rt60m0(matchedIndex0)); grid;
     t = text(fm0(matchedIndex0),rt60m0(matchedIndex0),num2str(plotModesCnt'));
-    set(t,'FontSize', 13);
-    set(t,'FontWeight', 'bold');
-    title('Mode T60s');
-    xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
+    % set(t,'FontSize', 13);
+    % set(t,'FontWeight', 'bold');
+    % title('Mode T60s');
+    xlabel('Mode Frequency, Hz'); ylabel('60 dB Decay Time, Seconds');
     xlim([20 5000]);
 
     figure(4);
     subplot(2,1,1);
     stem(fm1(matchedIndex1), gammam1(matchedIndex1)); grid;
     t = text(fm1(matchedIndex1),gammam1(matchedIndex1),num2str(plotModesCnt'));
-    set(t,'FontSize', 13);
-    set(t,'FontWeight', 'bold');
-    title('Mode Amplitudes');
-    xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
+    % set(t,'FontSize', 13);
+    % set(t,'FontWeight', 'bold');
+    % title('Mode Amplitudes');
+    xlabel('Mode Frequency, Hz'); ylabel('Amplitude, dB');
     xlim([20 5000]);
     subplot(2,1,2); 
     stem(fm1(matchedIndex1), rt60m1(matchedIndex1)); grid;
     t = text(fm1(matchedIndex1),rt60m1(matchedIndex1),num2str(plotModesCnt'));
-    set(t,'FontSize', 13);
-    set(t,'FontWeight', 'bold');
-    title('Mode T60s');
-    xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
+    % set(t,'FontSize', 13);
+    % set(t,'FontWeight', 'bold');
+    % title('Mode T60s');
+    xlabel('Mode Frequency, Hz'); ylabel('60 dB Decay Time, Seconds');
     xlim([20 5000]);
 end
 
@@ -353,7 +377,7 @@ if plotTransposedModes == 1
     stem(scaledFm0(matchedIndex0), repmat(0,1,length(matchedIndex0)), 'red'); % transposed modes
     hold off;
     grid;
-    xlabel('mode frequency, Hz');
+    xlabel('Mode Frequency, Hz'); ylabel('Amplitude, dB');
     title('Object 1 ');
     xlim([20 3000]);
     subplot(2,1,2);
@@ -362,7 +386,7 @@ if plotTransposedModes == 1
     stem(scaledFm1(matchedIndex1), repmat(0,1,length(matchedIndex1)), 'red'); % transposed modes
     hold off;
     grid;
-    xlabel('mode frequency, Hz');
+    xlabel('Mode Frequency, Hz'); ylabel('Amplitude, dB');
     title('Object 0');
     xlim([20 3000]);
 end
@@ -370,15 +394,15 @@ end
 %% Plotting morphed modes against measured modes for middle object
 
 if plotMorphedModes == 1
-    figure(5);
+    figure(6);
     subplot(2,1,1);
     stem(fmProof(maxIndexProof), gammamProof(maxIndexProof), 'blue');
     hold on;
     stem(fmMorph, gammamMorph, 'red');
     hold off;
     grid;
-    title('Mode Amplitudes');
-    xlabel('mode frequency, Hz'); ylabel('amplitude, dB');
+    title('Mode Amplitude');
+    xlabel('Mode Frequency, Hz'); ylabel('Amplitude, dB');
     xlim([20 3000]);
     subplot(2,1,2); 
     stem(fmProof(maxIndexProof), rt60mProof(maxIndexProof), 'blue');
@@ -387,7 +411,7 @@ if plotMorphedModes == 1
     hold off;
     grid;
     title('Mode T60s');
-    xlabel('mode frequency, Hz'); ylabel('60 dB decay time, seconds');
+    xlabel('Mode Frequency, Hz'); ylabel('60 dB Decay Time, Seconds');
     xlim([20 3000]);
 end
 
